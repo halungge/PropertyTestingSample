@@ -4,3 +4,4 @@ target/
 libraries/
 src/
 pom.xml
+.DS_Store
