@@ -30,6 +30,17 @@ public class StringStatisticsTest {
         assertEquals(new Integer(1), counts.get("b"));
     }
 
+    @Test
+    public void correctlyCountsLettersInAabbcde() throws Exception {
+
+        Map<String, Integer> counts = StringStatistics.histogram("aabbcde");
+        assertEquals(new Integer(2), counts.get("a"));
+        assertEquals(new Integer(2), counts.get("b"));
+        assertEquals(new Integer(1), counts.get("c"));
+        assertEquals(new Integer(1), counts.get("d"));
+        assertEquals(new Integer(1), counts.get("e"));
+    }
+
 
 
 
