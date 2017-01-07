@@ -21,7 +21,14 @@ public class StringStatisticsTest {
 
     }
 
+    @Test
+    public void correctlyCountsLettersInAnOtherString() throws Exception {
 
+        Map<String, Integer> counts = StringStatistics.histogram("abc");
+        assertEquals(new Integer(1), counts.get("a"));
+        assertEquals(new Integer(1), counts.get("c"));
+        assertEquals(new Integer(1), counts.get("b"));
+    }
 
 
 
