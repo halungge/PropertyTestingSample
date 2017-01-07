@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class StringStatistics {
     public static Map<String,Integer> histogram(String input) {
-        HashMap<String, Integer> histogram = new HashMap<>();
+        Map<String, Integer> histogram = new HashMap<>();
 
         for (int i = 0;i <input.length(); i++){
             String c = String.valueOf(input.charAt(i));
