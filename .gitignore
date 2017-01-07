@@ -2,3 +2,5 @@
 propertyTestingSample.iml
 target/
 libraries/
+src/
+pom.xml
