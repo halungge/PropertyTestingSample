@@ -2,12 +2,15 @@ package mlz.money;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.When;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.greaterThan;
 
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeThat;
 
 
 @RunWith(JUnitQuickcheck.class)
@@ -26,6 +29,13 @@ public class CalculatorProperties {
 
     @Property
     public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
+        System.out.printf("trying with with a= %2.4f  and b=%2.4f\n", a, b);
+        assumeThat(b, greaterThan(BigDecimal.ZERO));
+        System.out.printf("assert with a= %2.4f  and b=%2.4f\n", a, b);
+        assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
+    }
+    @Property
+    public void fixAdditionIncreasesAmountByConfiguringGenerator(BigDecimal a, @InRange(min = "0")BigDecimal b){
         assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
     }
 

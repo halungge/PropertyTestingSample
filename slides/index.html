@@ -193,12 +193,36 @@
 				</section>
 				<section data-markdown>
 					<script type="text/template">
-						libraries provide
-						- generators for simple types.
+						###libraries provide
+						- generators for built-in library types.
+						   - [`junit-quickcheck`:](http://pholser.github.io/junit-quickcheck/site/0.7/usage/basic-types.html)
+							 Java primitives and Wrappers, String, List, Map, Set, BigDecimal, BigInteger, FunctionalInterface
 						- an API to write your own custom generators.
 						</script>
 				</section>
-
+				<section data-markdown>
+					<script type="text/template">
+						### Restrict generated values
+						1. make assumptions in test
+						```java
+						@Property
+						public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
+							assumeThat(b, greaterThan(BigDecimal.ZERO));
+							...
+						}
+						```
+						--> **reduces efficiency!** in our example 1/2 of the generated samples
+						are thrown away.
+						2. configure generator
+						```java
+						@Property
+						public void increasesAmount(BigDecimal a, @InRange(min = "0")BigDecimal b){...}
+						```
+						</script>
+						<aside>
+							code: show restriction to values above zero.
+						</aside>
+				</section>
 
 				<section data-markdown>
 					<script type="text/template">
