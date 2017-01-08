@@ -19,4 +19,14 @@ public class CalculatorProperties {
         assertEquals(Calculator.add(a, b), Calculator.add(b,a));
     }
 
+    @Property
+    public void zeroIsNeutralElement(BigDecimal a){
+        assertEquals(a, Calculator.add(a, BigDecimal.ZERO));
+    }
+
+    @Property
+    public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
+        assertTrue(Calculator.add(a, b).compareTo(a) >= 0);
+    }
+
 }
