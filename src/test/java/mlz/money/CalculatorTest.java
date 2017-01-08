@@ -1,6 +1,7 @@
 package mlz.money;
 
 import org.junit.Test;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.math.BigDecimal;
 
@@ -30,5 +31,12 @@ public class CalculatorTest {
         BigDecimal amount1 = new BigDecimal("2.3");
         BigDecimal amount2 = new BigDecimal("2.0");
         assertTrue(new BigDecimal("0.3").compareTo(Calculator.subtract(amount1, amount2))== 0);
+    }
+
+    @Test
+    public void subtractDoesNotFallBelowZero(){
+        BigDecimal amount1 = new BigDecimal("2.3");
+        BigDecimal amount2 = new BigDecimal("2.0");
+        assertTrue(new BigDecimal("0.0").compareTo(Calculator.subtract(amount2, amount1)) == 0);
     }
 }
