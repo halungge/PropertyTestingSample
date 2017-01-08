@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class CalculatorProperties {
 
     @Property(trials = 2)
-    public void additionIsCommutative(@When(seed = 23L) BigDecimal a, @When(seed=77L)BigDecimal b){
+    public void isCommutative(@When(seed = 23L) BigDecimal a, @When(seed=77L)BigDecimal b){
         System.out.printf("testing with a= %2.10f  and b=%2.10f\n", a, b);
         assertEquals(Calculator.add(a, b), Calculator.add(b,a));
     }
@@ -26,7 +26,7 @@ public class CalculatorProperties {
 
     @Property
     public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
-        assertTrue(Calculator.add(a, b).compareTo(a) >= 0);
+        assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
     }
 
 }
