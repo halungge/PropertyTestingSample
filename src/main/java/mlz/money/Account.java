@@ -16,9 +16,13 @@ public class Account {
     }
 
 
-    public void deposit(List<Coin> money){
-       balance = newBalance(balance, money);
+    public void deposit(List<Coin> coins){
+       balance = newBalance(balance, coins);
 
+    }
+
+    public void deposit(Money money){
+        balance = Calculator.add(balance, money.value());
     }
 
     private BigDecimal newBalance(BigDecimal balance, List<Coin> increment){

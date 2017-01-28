@@ -3,7 +3,7 @@ package mlz.money;
 import java.math.BigDecimal;
 
 
-public enum Coin {
+public enum Coin{
     ONE(BigDecimal.ONE),
     TWO(new BigDecimal("2.00")),
     FIVE(new BigDecimal("5.00")),

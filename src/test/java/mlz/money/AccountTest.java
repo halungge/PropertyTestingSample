@@ -46,9 +46,35 @@ public class AccountTest {
 
     //fails because of empty list..
     @Property
-    public void depositMoneyAddsToBalance(List<Coin> handFullOfCoins){
+    public void depositCoinsIncreasesBalance(List<Coin> handFullOfCoins){
         account.deposit(handFullOfCoins);
         assertTrue("balance is not > 0", account.getBalance().doubleValue() > 0);
     }
+
+
+    @Test
+    public void depositedMoneyAddsToBalance() {
+        BigDecimal amount = new BigDecimal("13.50");
+        account.deposit(new Money(amount));
+        assertTrue("balance is not 13.50", amount.compareTo(account.getBalance()) == 0);
+    }
+
+    @Test
+    public void depositingTwiceAddsTotalSum() {
+        BigDecimal ten = new BigDecimal("10.0");
+        account.deposit(new Money(ten));
+        BigDecimal threeFifty = new BigDecimal("3.50");
+        account.deposit(new Money(threeFifty));
+        assertTrue("balance is not 13.50", new BigDecimal("13.50").compareTo(account.getBalance()) == 0);
+    }
+
+    //fails due to missing generator
+    @Property
+    public void depositMoneyIncreasesBalance(Money money){
+        account.deposit(money);
+        assertTrue("balance is not > 0", account.getBalance().doubleValue() > 0);
+    }
+
+
 
 }
