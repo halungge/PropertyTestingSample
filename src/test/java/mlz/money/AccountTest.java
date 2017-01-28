@@ -49,7 +49,7 @@ public class AccountTest {
         account.deposit(new Money(BigDecimal.TEN));
         Money subtracted = new Money(new BigDecimal("5.70"));
         account.withdraw(subtracted);
-        assertTrue(" balance " + account.getBalance() + " was not 4.30", new BigDecimal("4.30").compareTo(account.getBalance()s)==0 );
+        assertTrue(" balance " + account.getBalance() + " was not 4.30", new BigDecimal("4.30").compareTo(account.getBalance())==0 );
     }
 
 
@@ -96,6 +96,12 @@ public class AccountTest {
 
     }
 
+    @Property
+    public void accountBalanceNeverDropsBelowZero(@From(MoneyGenerator.class) Money deposit, @From(MoneyGenerator.class) Money withdrawal){
+        account.deposit(deposit);
+        account.withdraw(withdrawal);
+        assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) >= 0);
+    }
 
 
 }
