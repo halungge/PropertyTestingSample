@@ -33,6 +33,7 @@ public class CalculatorTest {
         assertTrue(new BigDecimal("0.3").compareTo(Calculator.subtract(amount1, amount2))== 0);
     }
 
+
     @Test
     public void subtractDoesNotFallBelowZero(){
         BigDecimal amount1 = new BigDecimal("2.3");
