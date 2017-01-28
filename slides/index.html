@@ -256,13 +256,53 @@
 				<section data-markdown>
 					<script type="text/template">
 						### Write your own
+
+						```java
+						public class MoneyGenerator extends Generator<Money> {
+							@Override
+							public Money generate(SourceOfRandomness random, GenerationStatus status) {
+								final double value = random.nextDouble(-10000, 10000);
+								return new Money(new BigDecimal(value));
+							}
+
+						```
+
+						and use it
+
+						```java
+						@Property
+						public void depositMoneyIncreasesBalance(@From(MoneyGenerator.class) Money amount){
+							```
 						</script>
 				</section>
 				<section data-markdown>
+					<script type ="text/template">
+						- You can use a specific generator in your Test by adding the `@From` annotation to the argument.
+						- You can add your generators to the `ServiceLoader` by adding their fully qualified names
+						to a config file `com.pholser.junit.quickcheck.generator.Generator` in `META-INF/services`.
+						The generators of `junit-quickcheck-generators` are made available in this way.
+					</script>
+				</section>
+				<section data-markdown>
 					<script type="text/template">
+						###Shrinking revisted
+						you can also implement shrinking in your own generator.
+
+						```java
+						@Override
+						public List<Money> doShrink(SourceOfRandomness random, Money larger){
+							List<BigDecimal> shrinkedAmounts = gen().type(BigDecimal.class).doShrink(random, larger.value());
+							return shrinkedAmounts.stream().map(bd -> new Money(bd)).collect(Collectors.toList());
+						}
+            ```
+						- `doShrink` takes an object `T` and gives back `List<T>` with values that are supposed to be smaller. If
+						you cannot further shrink, you are supposed to return the empty list.
+						- `gen().type(Clazz)` is provided by the `Generator` class an gives you access to all other generators
+							available in the system.
 
 						</script>
 				</section>
+
 			</section>
 <!-- new column: history and discussion of the Ansatz -->
 			<section>
@@ -315,12 +355,23 @@
 				</section>
 			</section>
 			<!--- new column: questions, contact... -->
+			<section>
+
+			<section data-markdown>
+				<script type="text/template">
+					##Thank you
+					Code and slides are available from
+
+					[https://github.com/halungge/PropertyTestingSample](https://github.com/halungge/PropertyTestingSample)
+
+					</script>
+			</section>
 			<section data-markdown>
 				<script type="text/template">
 					##Questions?
 				</script>
 			</section>
-
+</section>
 			</div>
 		</div>
 

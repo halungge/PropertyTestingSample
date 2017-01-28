@@ -33,9 +33,8 @@ public class Account {
         return balance;
     }
 
-    //TODO remove subtract
-    public void withdraw(BigDecimal sum){
-        balance = Calculator.subtract(balance, sum);
+    public void withdraw(Money sum){
+        balance = Calculator.add(balance, sum.value().negate());
     }
 
 }

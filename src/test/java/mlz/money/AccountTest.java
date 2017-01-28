@@ -44,6 +44,14 @@ public class AccountTest {
 
     }
 
+    @Test
+    public void withdrawDecreasesBalance(){
+        account.deposit(new Money(BigDecimal.TEN));
+        Money subtracted = new Money(new BigDecimal("5.70"));
+        account.withdraw(subtracted);
+        assertTrue(" balance " + account.getBalance() + " was not 4.30", new BigDecimal("4.30").compareTo(account.getBalance()s)==0 );
+    }
+
 
     //fails because of empty list..
     @Property
@@ -69,13 +77,23 @@ public class AccountTest {
         assertTrue("balance is not 13.50", new BigDecimal("13.50").compareTo(account.getBalance()) == 0);
     }
 
+
+
     //fails due to missing generator
-    @Property(trials = 100)
+    @Property
+    public void depositedAmountAddsToBalance(@From(MoneyGenerator.class) Money amount){
+        account.deposit(amount);
+        assertTrue("balance should be equal to amount", amount.value().compareTo(account.getBalance()) == 0);
+    }
+
+
+    @Property
     public void depositMoneyIncreasesBalance(@From(MoneyGenerator.class) Money amount1, @From(MoneyGenerator.class) Money amount2){
         account.deposit(amount1);
         account.deposit(amount2);
-        assertTrue("balance is not larger than amount1", amount1.value().compareTo(account.getBalance()) <= 0);
-        assertTrue("balance is not larger than amount2", amount2.value().compareTo(account.getBalance()) <= 0);
+        assertTrue("balance should be larger than amount1", amount1.value().compareTo(account.getBalance()) <= 0);
+        assertTrue("balance should be larger than amount2", amount2.value().compareTo(account.getBalance()) <= 0);
+
     }
 
 
