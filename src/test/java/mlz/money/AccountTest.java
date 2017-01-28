@@ -1,5 +1,6 @@
 package mlz.money;
 
+import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Before;
@@ -69,10 +70,12 @@ public class AccountTest {
     }
 
     //fails due to missing generator
-    @Property
-    public void depositMoneyIncreasesBalance(Money money){
-        account.deposit(money);
-        assertTrue("balance is not > 0", account.getBalance().doubleValue() > 0);
+    @Property(trials = 100)
+    public void depositMoneyIncreasesBalance(@From(MoneyGenerator.class) Money amount1, @From(MoneyGenerator.class) Money amount2){
+        account.deposit(amount1);
+        account.deposit(amount2);
+        assertTrue("balance is not larger than amount1", amount1.value().compareTo(account.getBalance()) <= 0);
+        assertTrue("balance is not larger than amount2", amount2.value().compareTo(account.getBalance()) <= 0);
     }
 
 
