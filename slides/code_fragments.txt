@@ -1,0 +1,97 @@
+-- t1: in Calculator.java add
+return amount1.add(amount2);
+
+--------------------------------------
+-- t2: add class
+
+@RunWith(JUnitQuickcheck.class)
+public class CalculatorProperties {
+
+    @Property
+    public void isCommutative(BigDecimal a, BigDecimal b){
+        assertEquals(Calculator.add(a, b), Calculator.add(b,a));
+    }
+
+    @Property
+    public void zeroIsNeutralElement(BigDecimal a){
+        assertEquals(a, Calculator.add(a, BigDecimal.ZERO));
+    }
+
+-- add println to test to see what happens
+System.out.printf("testing with a= %2.10f  and b=%2.10f\n", a, b);ß
+
+-- add trials = 2 and @When(seed = ??) to show reproducibility and config
+
+    @Property(trials=2)
+    public void isCommutative(@When(seed=3L)BigDecimal a, @When(seed=45L)BigDecimal b)
+
+-----------------------------------------------------------------
+--t23: add Property for the amount increase
+
+@Property
+   public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
+       System.out.printf("trying with with a= %2.4f  and b=%2.4f\n", a, b);
+       assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
+   }
+
+  show without shrinking...
+   @Property(shrink = false)
+
+   ----------------------------------------------------------------
+   t3: fix failing tests by assumptions
+
+   System.out.printf("trying with with a= %2.4f  and b=%2.4f\n", a, b);
+   assumeThat(b, greaterThan(BigDecimal.ZERO));
+   System.out.printf("assert with a= %2.4f  and b=%2.4f\n", a, b);
+   assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
+---------------------------------------------------------
+   t3: add new test that fixes the problem above with configuration
+
+   @Property
+    public void fixAdditionIncreasesAmountByConfiguringGenerator(BigDecimal a, @InRange(min = "0")BigDecimal b){
+        assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
+    }
+----- ----------------------------------------------------
+---t51: add money, coin and account to domain model, explain
+
+---add a poperty test to AccountTest class
+
+@RunWith(JUnitQuickcheck.class)
+
+
+//fails due to missing generator
+    @Property
+    public void depositedAmountAddsToBalance(Money amount){
+        account.deposit(amount);
+        assertTrue("balance should be equal to amount", amount.value().compareTo(account.getBalance()) == 0);
+    }
+------------------------------------------
+---t52: add MoneyGenerator
+
+public class MoneyGenerator extends Generator<Money> {
+
+    public MoneyGenerator() {
+        super(Money.class);
+    }
+
+    @Override
+    public Money generate(SourceOfRandomness random, GenerationStatus status) {
+        final double value = random.nextDouble(-10000, 10000);
+        return new Money(new BigDecimal(value));
+    }
+
+}
+
+--- use it in AccountTest
+public void depositMoneyIncreasesBalance(@From(MoneyGenerator.class) Money amount){
+----------------------------------------
+--t55
+add a new test that checks that account balanced is never < 0. for this checkout t55 or remove the
+functionality from Calculator and CalculatorTest!!
+
+@Property
+   public void accountBalanceNeverDropsBelowZero(@From(MoneyGenerator.class) Money deposit, @From(MoneyGenerator.class) Money withdrawal){
+       account.deposit(deposit);
+       account.withdraw(withdrawal);
+       assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) >= 0);
+   }

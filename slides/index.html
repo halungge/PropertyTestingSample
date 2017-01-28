@@ -50,11 +50,9 @@
 					## Example Based testing
 				</script >
 			</section>
-
-
 				<section data-markdown>
 					<aside class="notes">
-        see code, Calculator.java tag t1.
+        see code: t1: Failing CalculatorTest. Fix it.
     			</aside>
 					<script type="text/template">
 						we define concrete test cases, that must hold:
@@ -65,6 +63,8 @@
 						then how do you guarantees that the code works for
 						```java
 						23 + 12.77 == ???
+
+						23 + (-12.77) == ???
 						```
 						</script>
 				</section>
@@ -82,6 +82,7 @@
 					</section>
 					<section data-markdown>
 						<aside class="notes">
+							evtl. show dependencies in pom.xml
 	        	</aside>
 						<script type="text/template">
 						  We will use a java libary for property based testing: [junit-quickchek](https://github.com/pholser/junit-quickcheck)
@@ -145,6 +146,10 @@
 						</script>
 				</section>
 				<section data-markdown>
+					<aside>
+							code: add CalculatorProperties with @Property Test for commutative
+							and zero element
+					</aside>
 					<script type="text/template">
 						- assertions are made in the usual JUnit way.
 						- you can mix example based `@Test` tests with `@Property`
@@ -152,20 +157,6 @@
 					</script>
 				</section>
 
-				<section data-markdown>
-					<script type="text/template">
-						### Failing tests
-						why does it fail?
-						```
-						java.lang.AssertionError: Property additionIncreasesAmount falsified via shrinking: sum is smaller than original value a = 0
-						Shrunken args: [0, -2]
-						Original failure message: [sum is smaller than original value a = 5]
-						Original args: [5, -2]
-						Seeds: [1822705799151530100, -6894467283753433357]
-						```
-
-						</script>
-				</section>
 				<section data-markdown>
 					<script type="text/template">
 						###Is it reproducible?
@@ -184,35 +175,44 @@
 						show in code: set trials = 2, run twice: different data, set seed, same data
 					</aside>
 				</section>
+
 				<section data-markdown>
+					<aside>
+						add test for the last property that increases the amount
+
+					</aside>
+					<script type="text/template">
+						### Failing tests
+						why does it fail?
+						```
+						java.lang.AssertionError: Property additionIncreasesAmount falsified via shrinking: sum is smaller than original value a = 0
+						Shrunken args: [0, -2]
+						Original failure message: [sum is smaller than original value a = 5]
+						Original args: [5, -2]
+						Seeds: [1822705799151530100, -6894467283753433357]
+						```
+
+						</script>
+				</section>
+
+				<section data-markdown>
+					<aside>
+						show disabling of shrinking
+					</aside>
 					<script type="text/template">
 						### Shrinking
-						a good library supports **shrinking**:
+						- a good library supports **shrinking**:
 						> reduce the failing test to the *simplest* failing sample
 
 						what *simplest* means depends on the data generator.
+						- shrinking is enabled by default but can be disabled.
 
-						</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						### Data Generation
-						Test samples are generated at random. How?
-						</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						libraries provide
-						- generators for built-in library types.
-						   - [`junit-quickcheck`:](http://pholser.github.io/junit-quickcheck/site/0.7/usage/basic-types.html)
-							 Java primitives and Wrappers, String, List, Map, Set, BigDecimal, BigInteger, enum-values, FunctionalInterface
-						- an API to write your own custom generators.
 						</script>
 				</section>
 				<section data-markdown>
 					<script type="text/template">
 						### Restrict generated values
-						1. make assumptions in test
+						make assumptions in test
 						```java
 						@Property
 						public void additionIncreasesAmount(BigDecimal a, BigDecimal b){
@@ -230,6 +230,26 @@
 				</section>
 
 				<section data-markdown>
+					<script type="text/template">
+						### Data Generation
+						Test samples are generated at random. How?
+						</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						libraries provide
+						- generators for built-in library types.
+						   - [`junit-quickcheck`:](http://pholser.github.io/junit-quickcheck/site/0.7/usage/basic-types.html)
+							 Java primitives and Wrappers, String, List, Map, Set, BigDecimal, BigInteger, enum-values, FunctionalInterface
+						- an API to write your own custom generators.
+						</script>
+				</section>
+
+
+				<section data-markdown>
+					<aside>
+						code: show fix of the issue before by configuration of Generator
+					</aside>
 					<script type="text/template">
 					###Configure generators
 					Our generator has a
@@ -285,7 +305,7 @@
 				</section>
 				<section data-markdown>
 					<script type="text/template">
-						###Shrinking revisted
+						###Shrinking revisited
 						you can also implement shrinking in your own generator.
 
 						```java
