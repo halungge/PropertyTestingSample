@@ -18,7 +18,7 @@ public class CalculatorProperties {
     }
 
 -- add println to test to see what happens
-System.out.printf("testing with a= %2.10f  and b=%2.10f\n", a, b);ß
+System.out.printf("testing with a= %2.10f  and b=%2.10f\n", a, b);
 
 -- add trials = 2 and @When(seed = ??) to show reproducibility and config
 
@@ -44,6 +44,15 @@ System.out.printf("testing with a= %2.10f  and b=%2.10f\n", a, b);ß
    assumeThat(b, greaterThan(BigDecimal.ZERO));
    System.out.printf("assert with a= %2.4f  and b=%2.4f\n", a, b);
    assertTrue("sum is smaller than original value a = " + a, Calculator.add(a, b).compareTo(a) >= 0);
+
+
+
+
+
+
+
+
+
 ---------------------------------------------------------
    t3: add new test that fixes the problem above with configuration
 
@@ -84,6 +93,24 @@ public class MoneyGenerator extends Generator<Money> {
 
 --- use it in AccountTest
 public void depositMoneyIncreasesBalance(@From(MoneyGenerator.class) Money amount){
+
+
+
+————————————
+add shrinking to MoneyGenerator
+
+    //add shrinking, by reverting to the shrinking mechano of the BigDecimalGenerator
+    @Override
+    public List<Money> doShrink(SourceOfRandomness random, Money larger){
+        List<BigDecimal> shrinkedAmounts = gen().type(BigDecimal.class).doShrink(random, larger.value());
+        return shrinkedAmounts.stream().map(bd -> new Money(bd)).collect(Collectors.toList());
+
+}        
+
+
+
+
+
 ----------------------------------------
 --t55
 add a new test that checks that account balanced is never < 0. for this checkout t55 or remove the
@@ -95,3 +122,7 @@ functionality from Calculator and CalculatorTest!!
        account.withdraw(withdrawal);
        assertTrue(account.getBalance().compareTo(BigDecimal.ZERO) >= 0);
    }
+
+--t56 fix the test by correctly fixing the implementation, in Account.withdwraw add
+
+balance = addedAmount.compareTo(BigDecimal.ZERO) < 0? BigDecimal.ZERO:addedAmount;

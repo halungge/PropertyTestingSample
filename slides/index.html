@@ -32,7 +32,7 @@
 					<script type="text/template">
 					##Introduction to property based testing
 
-					31.1.2017, Magdalena
+					Techtalk Zühlke 31.1.2017, Magdalena Luz
 				</script >
 			</section>
 				<section data-markdown data-background="#CADAEC">
@@ -58,13 +58,13 @@
 						we define concrete test cases, that must hold:
 						```java
 						2.0 + 2.3 == 4.3
-						123.9 + 0 == 123.9
+						2.3 + 0 == 2.3
 						```
 						then how do you guarantees that the code works for
 						```java
 						23 + 12.77 == ???
 
-						23 + (-12.77) == ???
+						2.3 + (-2.0) == ???
 						```
 						</script>
 				</section>
@@ -80,14 +80,7 @@
 
 						</script >
 					</section>
-					<section data-markdown>
-						<aside class="notes">
-							evtl. show dependencies in pom.xml
-	        	</aside>
-						<script type="text/template">
-						  We will use a java libary for property based testing: [junit-quickchek](https://github.com/pholser/junit-quickcheck)
-							</script >
-						</section>
+
 				<section data-markdown>
 					<script type="text/template">
 						##The general idea
@@ -123,6 +116,14 @@
 							```
 					</script >
 				</section>
+				<section data-markdown>
+					<aside class="notes">
+						evtl. show dependencies in pom.xml
+					</aside>
+					<script type="text/template">
+						We will use a java libary for property based testing: [junit-quickchek](https://github.com/pholser/junit-quickcheck)
+						</script >
+					</section>
 				<section data-markdown>
 					<script type="text/template">
 						## The details
@@ -382,7 +383,9 @@
 					##Thank you
 					Code and slides are available from
 
-					[https://github.com/halungge/PropertyTestingSample](https://github.com/halungge/PropertyTestingSample)
+					[https://github.com/halungge/PropertyAccounting](https://github.com/halungge/PropertyAccounting)
+
+					[slides](https://github.com/halungge/PropertyTestingSample/)
 
 					</script>
 			</section>
